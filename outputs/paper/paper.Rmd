@@ -1,0 +1,387 @@
+---
+title: "My title"
+subtitle: "My subtitle if needed"
+author: 
+  - Qiuhan Wang
+  - Yuxuan Yang
+  - Zihan Zhang
+thanks: "Code and data are available at: https://github.com/zihanjasmine/turkey."
+date: "`r format(Sys.time(), '%d %B %Y')`"
+abstract: "Education is vital for both national economic growth and personal lives, but in some areas, especially backward regions, the importance of education is ignored, and sexual discrimination in education influences women’s opportunities as well. In this paper, we use the Turkish Demographic and Health Survey data to analyze the reasons for dropping out of school for women with different levels of education in Turkey in 1998. We find that the main reason for their leaving is the lack of parental involvement awareness of education. It can help women in Turkey have more opportunities to accept higher education and improve their education levels efficiently. "
+output:
+  bookdown::pdf_document2
+toc: FALSE
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(janitor)
+```
+
+# Introduction
+
+
+Education is a key essence for modern society, which helps countries grow economically. Education cultivates talents for the country, and investing in education is considered as a kind of way developing country because the citizens with a higher level of education are more likely to create higher GDP. Also, people with high educated can easily differentiate between right and wrong; thus, the crime rate can be reduced, which is beneficial to keeping society's stability. However, in some developing countries, the importance of education still be ignored, and sexual discrimination still exists. It’s difficult for people, especially females, to have opportunities to accept higher education. In this paper, we aim to analyze why females leave schools in Turkey and give suggestions to the government to reduce the dropout rate. 
+The paper “The relationship between economics and education” discussed the relationship between GDP per capita and average level of education. In addition the negative impacts from unequally treatment between males and females are investigated.( Banton, Michael. Discrimination. Open University Press, 1994.) In many developed countries, such as USA, the reasons for dropout are concluded, but it hasn’t down in Turkey before. (Inequality in Eudcation: Comparative and International Perspectives. 1. Publ. Vol. 24, Springer, 2008) 
+A short survey was created and conducted in 1998. Women aged 15-24 who were not currently attending school were asked about the main reason for giving up further studying in Turkey. The survey was conducted through the Turkish Demographic and Health Survey (TDHS-98). The data is authoritative and representative. From the responses, we find that fewer females in rural have a chance to complete primary school compared with urban ones. For females in both rural and urban, their parents didn’t send them to school, becoming the most significant reason. For those women who have chance to accept secondary education face a big challenge from passing the exam. 
+The article is structured as follows. First, we introduce the survey, including the sample size, population size, and survey method. Second, we calculate the percentage of female in Turkey attending to school currently. Analyzing the various reasons females leave schools in rural and urban areas separately and finding out the most important reasons that cause a high dropout rate are necessary. Finally, some advice on improving females’ educational opportunities is suggested.  
+
+# Data
+
+
+
+## Data collection 
+
+All the data used in this paper was retrieved from “Turkey DHS, 1998, Final Report” on The Demographic and Health Surveys Program (DHS program). The DHS Program collaborates with governments to gather and share critical data about individuals, their health, and their healthcare systems. DHS program assists developing countries to collect primary data through several types of questionnaires. This Turkey DHS report we chose illustrates a transaction in the structure of Turkey's population. To be more specific, it is a survey designed to provide information on fertility levels and trends, infant and child mortality rates, families, and maternal and child health with a nationally representative sample.
+
+## Data processing
+
+All analysis was done with a statistic programming language R. [@citeR] First, we use the R package "pdftools" [@citepdftools] to import the pdf file of “Turkey DHS, 1998, Final Report”. Then we extract data from table 2.11 on page 46 and split each character string into text lines using the R package “stringi”.[@citestringi] Then we separated the data into columns and stored it as raw data. The raw data is messy, so we corrected some typos in the raw data and stored it as cleaned data. Then we ran some tests to confirm that the data has no obvious errors. The “pointblank” [@citepointblank] agent allows us to run a few validation tests. We ran three validation functions, and the agent can get some intel about whether the category of all the variables is correct.
+
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Read in the usable dataset
+library(readr)
+raw_data <- read_csv("~/Turkey-1998/inputs/data/raw_data_new(1).csv")
+```
+
+
+
+
+```{r Table1, echo = FALSE, warning=FALSE}
+# Create a table to take a glimpse of some of our data
+library(knitr)
+
+table_1 <- raw_data[1:16, 1:4]
+
+table_1 %>%
+  kable(caption = "Glimpse: Percent of women aged 15-24 in urban areas by reasons for leaving school, Turkey in 1998")
+```
+
+## Survey method
+
+### Sampling method
+
+The Turkey DHS report used a weighted, multistaged, stratified sampling method to select the sample. The stratified sampling method is a method in which we divide our population into mutually exclusive strata or sub-populations. (Alexander, R., 2022) The target population of the survey is married women younger than 50, single women between 19 and 49, and husbands. These household populations completed different questionnaires. The questionnaires were designed in English and then translated into Turkish to collect information about their socioeconomic status. All types of questionnaires collect information about background characteristics, reproduction, marriage, sexually transmitted diseases and AIDS, knowledge, and use of family planning, fertility preference. Questionnaire for single women covers work and status, anthropometry: questionnaire for married women covers work and status, husband’s background, immunization and health, maternal and child anthropometry; questionnaire for husband covers attitudes specifically. The target population is stratified into two regions, urban and rural. Settlements with a population of more than 1000, such as provincial centers or district centers, are considered urban regions, while places with a population of less than 10,000 are considered rural regions. Multistaged sampling is always considered a more advanced version of cluster Sampling. We first divide the target population into different clusters, which are West, South, Central, North, and East regions of Turkey in this report. Then we break one cluster into smaller and smaller pieces at each stage. The five major regions are divided into different number of sub-regions, for example, east region contains three sub-regions, while north region contains two sub-regions. Each sub-region is consist of several provinces. 
+
+
+
+
+
+
+### Strengths
+
+When a population has distinct internal stratification, stratified sampling can improve the representativeness of the sample. What’s more, when the sample size is the same, the results of stratified sampling and cluster sampling are more accurate than the results of random sampling, so it is more accurate to use the conclusions drawn from stratified to infer the population data. Due to its high precision, we only need a small sample, so stratified sampling and cluster sampling are cheaper.
+
+
+### Weaknesses
+
+A downside of stratified sampling and cluster sampling is that evaluation and interpretation of the results are more complicated. clustering methods require the same representative size from samples, however, the size of representation is difficult to discern, so it is prone to significant sampling errors. (Gaille, 2020)
+
+## Data characteristics
+
+The dataset contains 50 observations in total, the dataset shows the percentage of women’s highest education levels and reasons they stopped attending school in 1998. We created  Table \@ref(tab:Table1) to get a sense of what our dataset looks like. From Table \@ref(tab:Table1), we could observe different reasons for leaving school for women aged 15-24 in Turkey in 1998, together with percent of women who have ever attended school but didn't attend anymore for each reason. Each row displays a specific reason for leaving school, and each column represents a different highest education level. For example, primary_incomplete refers to women who have attended primary school but didn't finish it; primary_complete refers to women who have completed primary school but didn't pursue higher education. We also have a row called 'number' to record the total number of women by highest education attained. 
+
+
+
+
+\newpage
+
+# Results
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# extract data for urban & rural areas.
+urban <- raw_data[1:14, 1:6]
+rural <- raw_data[18:31, 1:6]
+
+# Change data into more tidy data set
+library(tidyr)
+urban_long <- urban %>% gather(highest_edu, percentage, -c(reason_stopped_attending_school))
+
+rural_long <- rural %>% gather(highest_edu, percentage, -c(reason_stopped_attending_school))
+```
+
+
+```{r Table2, echo = FALSE, warning=FALSE}
+# Create summary statistics; display min, max, median, mean of percent women leaving school for each level of highest education attained.
+urban_long %>% 
+  group_by(highest_edu) %>%
+  summarise(avg = round(mean(percentage), 2), min = min(percentage), max = max(percentage), median = median(percentage)) %>%
+  kable(caption = "Summary Statistics of percent women leaving school, per highest education level, urban areas")
+```
+
+
+```{r Table3, echo = FALSE, warning=FALSE}
+# Create summary statistics; display min, max, median, mean of percent women leaving school for each level of highest education attained.
+rural_long %>% 
+  group_by(highest_edu) %>%
+  summarise(avg = round(mean(percentage),2), min = min(percentage), max = max(percentage), median = median(percentage)) %>%
+  kable(caption = "Summary Statistics of percent women leaving school, per highest education level, rural areas")
+```
+
+From Table \@ref(tab:Table2) and Table \@ref(tab:Table3) where we generated some summary statistics, we could observe the minimum, maximum, mean, and median percent of women leaving school at each education level. We got a rough idea that in both rural and urban areas, women aged 15-24 experienced similar sets of reasons for leaving school in 1998, yet the percent distribution of women leaving school is not even for each reason at each education level.
+
+
+Talk way more about it. 
+
+
+```{r, echo=FALSE, warning=FALSE}
+# Draw bar plot showing number of women leaving school by education levels.
+num_by_edu <- raw_data[c(16, 33), 2:6]
+num_by_edu$area <- "urban"
+num_by_edu[2,6] <- "rural"
+
+num_by_edu <- num_by_edu %>%
+  gather(highest_edu, number, -c(area)) %>%
+  group_by(area) %>%
+  mutate(percent_leave = (number/sum(number))*100)
+```
+
+
+```{r, Figure1, fig.cap="Percent of Women Leaving School In Each Education Level, By Area", echo=FALSE, warning=FALSE, message=FALSE}
+num_by_edu %>% 
+  ggplot(aes(x = highest_edu, y = percent_leave, fill = area)) +
+  geom_bar(position="dodge", stat="identity") +
+  labs(title = "Percent of Women Aged 15-24 Leaving School By Highest Education Attained",
+       x = "Highest Education Attained",
+       y = "Percent of Women Leaving School") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  theme_minimal()
+```
+
+From Figure \@ref(fig:Figure1), we observed that the percent of women aged 15-24 leaving school in both urban and rural areas are very similar in terms of the distribution across highest educations they attained; those who completed primary school but didn't go to secondary school took the greatest percentage among both rural and urban areas. Nevertheless, percent of women leaving school in rural areas due to failure to continue to secondary school almost doubled compared to women in urban areas. This indicates that girls in rural areas experienced severe loss of elementary educations compared with those in cities. 
+
+\newpage
+
+```{r, Figure2, fig.cap="Percent of Women Leaving School By Reason, Urban Areas", echo=FALSE, warning=FALSE, message=FALSE}
+# Draw bar plot showing percent of women leaving school by reason.
+raw_data[1:14, c(1, 7)] %>%
+  ggplot(aes(x = reason_stopped_attending_school, y = total)) + geom_bar(position="dodge", stat="identity") +
+  labs(title = "Percent of Women Aged 15-24 Leaving School By Reason in Urban Areas",
+       x = "Reason For Leaving School",
+       y = "Percent of Women Leaving School") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 4)) +
+  theme_minimal()
+```
+
+
+```{r, Figure3, fig.cap="Percent of Women Leaving School By Reason, Rural Areas", echo=FALSE, warning=FALSE, message=FALSE}
+# Draw bar plot showing percent of women leaving school by reason.
+raw_data[18:31, c(1, 7)] %>%
+  ggplot(aes(x = reason_stopped_attending_school, y = total)) + geom_bar(position="dodge", stat="identity") +
+  labs(title = "Percent of Women Aged 15-24 Leaving School By Reason in Rural Areas",
+       x = "Reason For Leaving School",
+       y = "Percent of Women Leaving School") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 4)) +
+  theme_minimal()
+```
+
+From Figure \@ref(fig:Figure2) and Figure \@ref(fig:Figure3), we observed that despite those who are currently attending school, the percent of women aged 15-24 leaving school is highest for the reason "parents did not send to school" in both urban and rural areas. That is, the biggest reason for women not attending school is the attitudes of parents. 
+
+\newpage
+
+```{r, Table4, echo=FALSE, warning=FALSE}
+# Draw bar plot showing percent of women leaving school by reason.
+raw_data[35:48, 1:6] %>%
+  gather(highest_edu, percentage, -c(reason_stopped_attending_school)) %>%
+  group_by(highest_edu) %>%
+  filter(percentage == max(percentage)) %>%
+  kable(caption = "Highest percent of women leaving school and corresponding reason for each education level")
+```
+
+From Table \@ref(tab:Table4), we observed that for women aged 15-24 who attended primary school (either completed it or not) but not secondary school, the biggest reason for not continuing to study is the negative attitudes of parents towards education, while for those who completed secondary school but didn't pursue higher education, the biggest reason is failure to pass exams. 
+
+\newpage
+
+# Discussion
+
+## Purpose and summary of the survey
+
+Nowadays, education becomes a hot topic because a good education has the power to change a country’s destiny and a person’s life. Governments are investing more than before in educating their citizens, so it’s beneficial to social development. Having well education helps people think, feel, and behave in a way that contributes to their success, and improves not only their personal satisfaction but also their community. Although more and more people are well educated in developing countries, gender bias still exists. People in some backward regions have insufficient awareness of education for women. That’s why the rate of women leaving school before they accept higher education.
+In the report, we use a table from page 46 of Turkish Demographic and Health Survey (TDHS-98) to find the most important reason causing females’ to leave. Our target population is all the Women aged 15-24 who were not currently attending school were asked about the main reason for giving up further studying in Turkey. The results from responders were collected by TDHS interview directly. In order to make sure objectivity and authority, we selected the responders randomly from rural and urban areas. Also, the females who stopped attending schools at different stages (incomplete primary school, complete primary school, incomplete secondary school, complete secondary school, higher) are covered as well. In the survey, we provided several reasons to explain their leaving, including getting pregnant, getting married, taking care of children, their family needed help, unaffordable school fees, disliking school, needing to earn money, being unsupported by family, and others. 
+In this paper, we discussed the percentage of women are currently attending school and the percentage of them who stop attending school at each education level in rural and urban separately. The main reasons for their leaving both regions are analyzed. In addition, we display the highest percentage of women leaving school and corresponding reasons for each education level. The research can provide guidance to programs seeking to improve educational opportunities for women.
+. 
+
+## Learn about the world
+
+From the survey, we learn that only 18% of females in Turkey have the opportunity to continue their studying, which is a pretty low percentage. In urban, the rate of females are currently attending school is 23.7, which is higher than that in rural (9.7%). This observation means that the government must pay more attention to improving females’ education levels, especially those females in the rural region. We suggest that the government can spend more money investing in schools and educational institutions to make citizens realize the importance of attending school. Also, some policies related to education can be published, such as compulsory education to enforce everyone attends school.
+51.57% of females drop out after completing primary school. Their parents refusing to send them to school to accept further education is the biggest reason. This observation means that most elder generations cannot realize the importance of education for females. To figure out this problem, the government can encourage citizens to join in some social activities about education and convert their traditional opinions through video, newspapers, and other public media.
+14.8% of females drop out of school because they don’t like school. The courses should be well set to stimulate students’ interest in learning. For example, teachers are encouraged to change the tedious teaching method to a funny one; they can play some games with students in the class to motivate students. Also, a good studying/school environment should be created because students’ physical and mental health is the most important to their growth. Some of them dislike school because they cannot adapt to the environment or face some abuse. There are four main types of abuse: physical abuse, sexual abuse, emotional abuse, and neglect. Teachers must be aware of signs of abuse and pay attention to the change in the external environment and students’ emotions. Teachers should encourage students to study rather than blame them. Students who are currently accepting primary education are sensitive and immature. If they face lots of pressure and psychological problems, they may be unwilling to go to school anymore. Isolation in the school must be prevented. When they have some issues, teachers should listen actively without giving emotional solid reactions or judgments. 
+Finally, those females who have opportunities to accept higher education face challenges in passing the exam. Failure to pass the exam becomes another non-negligible reason for their leaving. Therefore, to increase the number of females who have the chance to study further, the government and schools should adjust the difficulties of the exam so that more citizens can attend school successfully.
+
+
+## Weakness and learn in the future
+
+However, there are several limitations in our research so our data may not be accurate and we need to make some improvements. 
+Firstly, over 63000 thousand people lived in Turkey in 1998, and 50.75% were female. The sample size is only 3031, which is too small relative to the population of females aged 14-25. The small sample size gets decreasingly representative of the entire population. The small sample size can also lead to biased cases, such as non-response, which may influence data precision. Therefore, we want to survey as large a sample size as possible in further research. 
+Secondly, the survey is conducted by interview, which means that these responders have to answer the questions face to face, which means that they have the probability of concealing the real reason for their leaving because of environmental pressure or public opinion. For example, some females drop out of school when they get pregnant, but they are unwilling to say that and randomly choose another reason. In order to solve this problem, we suggest using an anonymous questionnaire to make sure the privacy of responders in the future.
+Thirdly, we observe that 17% of females choose “other” as the reason for stopping attending school, which is a high percentage. It reminds us that we may still ignore some main reasons causing their leave. Therefore, we suggest that the responders answering “others” are encouraged to write down the specific reasons in order to help us collect data accurately. This extra information is beneficial to us by giving more specific suggestions to improve the education level of females in Turkey.
+Finally, in the future survey, how family income and national GDP influence females’ education levels can be investigated. We should learn more about the relationship between citizens’ educational attainment and the development of a country. In addition, how parental factors influence children’s literacy development should be discussed. Also, sexual discrimination is considered a core issue in many fields, not just in education. If we want to fundamentally improve females' total education levels, analyzing the reasons causing discrimination is another topic necessary.
+
+
+
+
+\newpage
+
+\appendix
+
+# Appendix {-}
+
+**Motivation**
+
+1. *For what purpose was the dataset created? Was there a specific task in mind? Was there a specific gap that needed to be filled? Please provide a description.*
+    - The dataset was created to enable analysis of Australian politicians. We were unable to find a publicly available dataset in a structured format that had the biographical and political information on Australian politicians that was needed for modelling.
+2. *Who created the dataset (for example, which team, research group) and on behalf of which entity (for example, company, institution, organization)?*
+    - TBD
+3. *Who funded the creation of the dataset? If there is an associated grant, please provide the name of the grantor and the grant name and number.*
+    - No funding was received for this project. 
+4. *Any other comments?*
+    - No
+
+**Composition**
+
+1. *What do the instances that comprise the dataset represent (for example, documents, photos, people, countries)? Are there multiple types of instances (for example, movies, users, and ratings; people and interactions between them; nodes and edges)? Please provide a description.*
+	- TBD
+2. *How many instances are there in total (of each type, if appropriate)?*
+	- TBD
+3. *Does the dataset contain all possible instances or is it a sample (not necessarily random) of instances from a larger set? If the dataset is a sample, then what is the larger set? Is the sample representative of the larger set (for example, geographic coverage)? If so, please describe how this representativeness was validated/verified. If it is not representative of the larger set, please describe why not (for example, to cover a more diverse range of instances, because instances were withheld or unavailable).*
+	- TBD
+4. *What data does each instance consist of? "Raw" data (for example, unprocessed text or images) or features? In either case, please provide a description.*
+	- TBD
+5. *Is there a label or target associated with each instance? If so, please provide a description.*
+	- TBD
+6. *Is any information missing from individual instances? If so, please provide a description, explaining why this information is missing (for example, because it was unavailable). This does not include intentionally removed information, but might include, for example, redacted text.*
+	- TBD
+7. *Are relationships between individual instances made explicit (for example, users' movie ratings, social network links)? If so, please describe how these relationships are made explicit.*
+	- TBD
+8. *Are there recommended data splits (for example, training, development/validation, testing)? If so, please provide a description of these splits, explaining the rationale behind them.*
+	- TBD
+9. *Are there any errors, sources of noise, or redundancies in the dataset? If so, please provide a description.*
+	- TBD
+10. *Is the dataset self-contained, or does it link to or otherwise rely on external resources (for example, websites, tweets, other datasets)? If it links to or relies on external resources, a) are there guarantees that they will exist, and remain constant, over time; b) are there official archival versions of the complete dataset (that is, including the external resources as they existed at the time the dataset was created); c) are there any restrictions (for example, licenses, fees) associated with any of the external resources that might apply to a dataset consumer? Please provide descriptions of all external resources and any restrictions associated with them, as well as links or other access points, as appropriate.*
+	- TBD
+11. *Does the dataset contain data that might be considered confidential (for example, data that is protected by legal privilege or by doctor-patient confidentiality, data that includes the content of individuals' non-public communications)? If so, please provide a description.*
+	- TBD
+12. *Does the dataset contain data that, if viewed directly, might be offensive, insulting, threatening, or might otherwise cause anxiety? If so, please describe why.*
+	- TBD
+13. *Does the dataset identify any sub-populations (for example, by age, gender)? If so, please describe how these subpopulations are identified and provide a description of their respective distributions within the dataset.*
+	- TBD
+14. *Is it possible to identify individuals (that is, one or more natural persons), either directly or indirectly (that is, in combination with other data) from the dataset? If so, please describe how.*
+	- TBD
+15. *Does the dataset contain data that might be considered sensitive in any way (for example, data that reveals race or ethnic origins, sexual orientations, religious beliefs, political opinions or union memberships, or locations; financial or health data; biometric or genetic data; forms of government identification, such as social security numbers; criminal history)? If so, please provide a description.*
+	- TBD
+16. *Any other comments?*
+	- TBD
+
+**Collection process**
+
+1. *How was the data associated with each instance acquired? Was the data directly observable (for example, raw text, movie ratings), reported by subjects (for example, survey responses), or indirectly inferred/derived from other data (for example, part-of-speech tags, model-based guesses for age or language)? If the data was reported by subjects or indirectly inferred/derived from other data, was the data validated/verified? If so, please describe how.*
+	- TBD
+2. *What mechanisms or procedures were used to collect the data (for example, hardware apparatuses or sensors, manual human curation, software programs, software APIs)? How were these mechanisms or procedures validated?*
+	- TBD
+3. *If the dataset is a sample from a larger set, what was the sampling strategy (for example, deterministic, probabilistic with specific sampling probabilities)?*
+	- TBD
+4. *Who was involved in the data collection process (for example, students, crowdworkers, contractors) and how were they compensated (for example, how much were crowdworkers paid)?*
+	- TBD
+5. *Over what timeframe was the data collected? Does this timeframe match the creation timeframe of the data associated with the instances (for example, recent crawl of old news articles)? If not, please describe the timeframe in which the data associated with the instances was created.*
+	- TBD
+6. *Were any ethical review processes conducted (for example, by an institutional review board)? If so, please provide a description of these review processes, including the outcomes, as well as a link or other access point to any supporting documentation.*
+	- TBD
+7. *Did you collect the data from the individuals in question directly, or obtain it via third parties or other sources (for example, websites)?*
+	- TBD
+8. *Were the individuals in question notified about the data collection? If so, please describe (or show with screenshots or other information) how notice was provided, and provide a link or other access point to, or otherwise reproduce, the exact language of the notification itself.*
+	- TBD
+9. *Did the individuals in question consent to the collection and use of their data? If so, please describe (or show with screenshots or other information) how consent was requested and provided, and provide a link or other access point to, or otherwise reproduce, the exact language to which the individuals consented.*
+	- TBD
+10. *If consent was obtained, were the consenting individuals provided with a mechanism to revoke their consent in the future or for certain uses? If so, please provide a description, as well as a link or other access point to the mechanism (if appropriate).*
+	- TBD
+11. *Has an analysis of the potential impact of the dataset and its use on data subjects (for example, a data protection impact analysis) been conducted? If so, please provide a description of this analysis, including the outcomes, as well as a link or other access point to any supporting documentation.*
+	- TBD
+12. *Any other comments?*
+	- TBD
+
+**Preprocessing/cleaning/labeling**
+
+1. *Was any preprocessing/cleaning/labeling of the data done (for example, discretization or bucketing, tokenization, part-of-speech tagging, SIFT feature extraction, removal of instances, processing of missing values)? If so, please provide a description. If not, you may skip the remaining questions in this section.*
+	- TBD
+2. *Was the "raw" data saved in addition to the preprocessed/cleaned/labeled data (for example, to support unanticipated future uses)? If so, please provide a link or other access point to the "raw" data.*
+	- TBD
+3. *Is the software that was used to preprocess/clean/label the data available? If so, please provide a link or other access point.*
+	- TBD
+4. *Any other comments?*
+	- TBD
+
+**Uses**
+
+1. *Has the dataset been used for any tasks already? If so, please provide a description.*
+	- TBD
+2. *Is there a repository that links to any or all papers or systems that use the dataset? If so, please provide a link or other access point.*
+	- TBD
+3. *What (other) tasks could the dataset be used for?*
+	- TBD
+4. *Is there anything about the composition of the dataset or the way it was collected and preprocessed/cleaned/labeled that might impact future uses? For example, is there anything that a dataset consumer might need to know to avoid uses that could result in unfair treatment of individuals or groups (for example, stereotyping, quality of service issues) or other risks or harms (for example, legal risks, financial harms)? If so, please provide a description. Is there anything a dataset consumer could do to mitigate these risks or harms?*
+	- TBD
+5. *Are there tasks for which the dataset should not be used? If so, please provide a description.*
+	- TBD
+6. *Any other comments?*
+	- TBD
+
+**Distribution**
+
+1. *Will the dataset be distributed to third parties outside of the entity (for example, company, institution, organization) on behalf of which the dataset was created? If so, please provide a description.*
+	- TBD
+2. *How will the dataset be distributed (for example, tarball on website, API, GitHub)? Does the dataset have a digital object identifier (DOI)?*
+	- TBD
+3. *When will the dataset be distributed?*
+	- TBD
+4. *Will the dataset be distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)? If so, please describe this license and/ or ToU, and provide a link or other access point to, or otherwise reproduce, any relevant licensing terms or ToU, as well as any fees associated with these restrictions.*
+	- TBD
+5. *Have any third parties imposed IP-based or other restrictions on the data associated with the instances? If so, please describe these restrictions, and provide a link or other access point to, or otherwise reproduce, any relevant licensing terms, as well as any fees associated with these restrictions.*
+	- TBD
+6. *Do any export controls or other regulatory restrictions apply to the dataset or to individual instances? If so, please describe these restrictions, and provide a link or other access point to, or otherwise reproduce, any supporting documentation.*
+	- TBD
+7. *Any other comments?*
+	- TBD
+
+**Maintenance**
+
+1. *Who will be supporting/hosting/maintaining the dataset?*
+	- TBD
+2. *How can the owner/curator/manager of the dataset be contacted (for example, email address)?*
+	- TBD
+3. *Is there an erratum? If so, please provide a link or other access point.*
+	- TBD
+4. *Will the dataset be updated (for example, to correct labeling errors, add new instances, delete instances)? If so, please describe how often, by whom, and how updates will be communicated to dataset consumers (for example, mailing list, GitHub)?*
+	- TBD
+5. *If the dataset relates to people, are there applicable limits on the retention of the data associated with the instances (for example, were the individuals in question told that their data would be retained for a fixed period of time and then deleted)? If so, please describe these limits and explain how they will be enforced.*
+	- TBD
+6. *Will older versions of the dataset continue to be supported/hosted/maintained? If so, please describe how. If not, please describe how its obsolescence will be communicated to dataset consumers.*
+	- TBD
+7. *If others want to extend/augment/build on/contribute to the dataset, is there a mechanism for them to do so? If so, please provide a description. Will these contributions be validated/verified? If so, please describe how. If not, why not? Is there a process for communicating/distributing these contributions to dataset consumers? If so, please provide a description.*
+	- TBD
+8. *Any other comments?*
+	- TBD
+
+
+
+# Additional details
+
+
+\newpage
+
+
+# References
+
+Alexander, R. (n.d.).,2022, Telling stories with data. Chapter 8 Farm data. Retrieved March 28, 2022, from https://www.tellingstorieswithdata.com/farm-data.html?q=stratified+samplin#sampling-essentials 
+
+Gaille, L. (2020, February 18). 16 key advantages and disadvantages of cluster sampling. Vittana.org. Retrieved March 28, 2022, from https://vittana.org/16-key-advantages-and-disadvantages-of-cluster-sampling 
+
+
+Hacettepe University, Institute of Population Studies/Turkey and Macro International. 1999. Turkey Demographic and Health Survey 1998. Ankara, Turkey: Hacettepe University, Institute of Population Studies/Turkey and Macro International
+
+
+
