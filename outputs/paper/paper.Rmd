@@ -1,13 +1,14 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Major reasons accounting for the school dropout rate of Turkish women"
+subtitle: "Turkey women's right to education has not been realized in 1998"
 author: 
   - Qiuhan Wang
   - Yuxuan Yang
   - Zihan Zhang
 thanks: "Code and data are available at: https://github.com/zihanjasmine/Turkey-DHS."
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "Education is vital for both national economic growth and personal lives, but in some areas, especially backward regions, the importance of education is ignored, and sexual discrimination in education influences women’s opportunities as well. In this paper, we use the Turkish Demographic and Health Survey data to analyze the reasons for dropping out of school for women with different levels of education in Turkey in 1998. We find that the main reason for their leaving is the lack of parental involvement awareness of education. It can help women in Turkey have more opportunities to accept higher education and improve their education levels efficiently. "
+abstract: "Education is vital for both national economic growth and personal lives, but in some areas, especially backward regions, the importance of education is ignored, and sexual discrimination in education influences women’s opportunities as well. In this paper, we use the Turkish Demographic and Health Survey data in 1998 to analyze the main reasons for dropping out of school among Turkish young women (15-24 years old) with different levels of education. We find that the most important reason for their leaving is that their parents lack the awareness of the importance of education. As the public awareness of education gets increased through govenment promotion, we expect the women dropout rate in Turkey would drop and the education efficacy gets imporved."
+keywords: "Women's education, Turkey, Reasons for dropping out of school"
 output:
   bookdown::pdf_document2
 toc: FALSE
@@ -19,15 +20,22 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 library(janitor)
+
 ```
+
+
+\newpage
 
 # Introduction
 
 
-Education is a key essence for modern society, which helps countries grow economically. Education cultivates talents for the country, and investing in education is considered as a kind of way developing country because the citizens with a higher level of education are more likely to create higher GDP. Also, people with high educated can easily differentiate between right and wrong; thus, the crime rate can be reduced, which is beneficial to keeping society's stability. However, in some developing countries, the importance of education still be ignored, and sexual discrimination still exists. It’s difficult for people, especially females, to have opportunities to accept higher education. In this paper, we aim to analyze why females leave schools in Turkey and give suggestions to the government to reduce the dropout rate. 
-The paper “The relationship between economics and education” discussed the relationship between GDP per capita and average level of education. In addition the negative impacts from unequally treatment between males and females are investigated.( Banton, Michael. Discrimination. Open University Press, 1994.) In many developed countries, such as USA, the reasons for dropout are concluded, but it hasn’t down in Turkey before. (Inequality in Eudcation: Comparative and International Perspectives. 1. Publ. Vol. 24, Springer, 2008) 
-A short survey was created and conducted in 1998. Women aged 15-24 who were not currently attending school were asked about the main reason for giving up further studying in Turkey. The survey was conducted through the Turkish Demographic and Health Survey (TDHS-98). The data is authoritative and representative. From the responses, we find that fewer females in rural have a chance to complete primary school compared with urban ones. For females in both rural and urban, their parents didn’t send them to school, becoming the most significant reason. For those women who have chance to accept secondary education face a big challenge from passing the exam. 
-The article is structured as follows. First, we introduce the survey, including the sample size, population size, and survey method. Second, we calculate the percentage of female in Turkey attending to school currently. Analyzing the various reasons females leave schools in rural and urban areas separately and finding out the most important reasons that cause a high dropout rate are necessary. Finally, some advice on improving females’ educational opportunities is suggested.  
+Education is a key essence of modern society, which helps countries grow economically. Education cultivates talents for the country, and investing in education is considered a kind of way developing country because the citizens with a higher level of education are more likely to create higher GDP. Also, people with high educated can easily differentiate between right and wrong; thus, the crime rate can be reduced, which is beneficial to keeping society's stability. However, in some developing countries, the importance of education still be ignored, and sexual discrimination still exists. It’s difficult for people, especially females, to have opportunities to accept higher education. In this paper, we aim to analyze why females leave school in Turkey and give suggestions to the government to reduce the dropout rate. 
+
+The paper “The relationship between economics and education” discussed the relationship between GDP per capita and average level of education. In addition, the negative impacts of unequal treatment between males and females are investigated. [@Discrimination] In many developed countries, such as the USA, the reasons for dropout are concluded, but it hasn’t been down in Turkey before. [@inequality] 
+
+A short survey was created and conducted in 1998. Women aged 15-24 who were not currently attending school were asked about the main reason for giving up further studying in Turkey. The survey was conducted through the Turkish Demographic and Health Survey (TDHS-98). The data is authoritative and representative. From the responses, we find that fewer females in rural have a chance to complete primary school compared with urban ones. For females in both rural and urban, their parents didn’t send them to school, becoming the most significant reason. Those women who have a chance to accept secondary education face a big challenge in passing the exam. 
+
+The article is structured as follows. First, we introduce the survey, including the sample size, population size, and survey method. Second, we calculate the percentage of females in Turkey attending school. Analyzing the various reasons females leave schools in rural and urban areas separately and finding out the most important reasons that cause a high dropout rate are necessary. Finally, some advice on improving females’ educational opportunities is suggested. 
 
 # Data
 
@@ -39,7 +47,10 @@ All the data used in this paper was retrieved from “Turkey DHS, 1998, Final Re
 
 ## Data processing
 
-All analysis was done with a statistic programming language R. [@citeR] First, we use the R package "pdftools" [@citepdftools] to import the pdf file of “Turkey DHS, 1998, Final Report”. Then we extract data from table 2.11 on page 46 and split each character string into text lines using the R package “stringi”.[@citestringi] Then we separated the data into columns and stored it as raw data. The raw data is messy, so we corrected some typos in the raw data and stored it as cleaned data. Then we ran some tests to confirm that the data has no obvious errors. The “pointblank” [@citepointblank] agent allows us to run a few validation tests. We ran three validation functions, and the agent can get some intel about whether the category of all the variables is correct.
+All analyses were done with a statistic programming language R. [@citeR] First, we use the R package "pdftools" [@citepdftools] to import the pdf file of “Turkey DHS, 1998, Final Report”. A full-page table on page 46 interested us. Then we extracted data from table 2.11 on page 46 and split each character string into text lines using the R package “stringi”.[@citestringi] R packages "tidyverse"[@tidyverse], "janitor"[@janitor] were also used in data manipulation and cleaning.
+Then we separated the data into columns and stored it as raw data. The raw data was messy, so we corrected some typos in the raw data and stored it as cleaned data. 
+
+Then we ran some tests to confirm that the data has no obvious errors. The “pointblank” [@citepointblank] agent allows us to run a few validation tests. We ran three validation functions, and the agent can get some intel about whether the category of all the variables is correct. The first validation test checked whether the column “Reasons stopped attending school” was a characteristic variable. The second validation function ensured all answers to “Reasons stopped attending school” was one of “currently attending”,” got married”, “got pregnant”, “take care of children”, “family needed help”, ”could not pay school fees”, “needed to earn money”, “graduated”, “did not pass the exam”, “did not like school”, “school not accessible”, “parents did not send to school”, “other”, “missing”, “total”,” number”. The third validation function checked if the rest columns were all numeric variables.
 
 
 
@@ -66,8 +77,11 @@ table_1 %>%
 
 ### Sampling method
 
-The Turkey DHS report used a weighted, multistaged, stratified sampling method to select the sample. The stratified sampling method is a method in which we divide our population into mutually exclusive strata or sub-populations. (Alexander, R., 2022) The target population of the survey is married women younger than 50, single women between 19 and 49, and husbands. These household populations completed different questionnaires. The questionnaires were designed in English and then translated into Turkish to collect information about their socioeconomic status. All types of questionnaires collect information about background characteristics, reproduction, marriage, sexually transmitted diseases and AIDS, knowledge, and use of family planning, fertility preference. Questionnaire for single women covers work and status, anthropometry: questionnaire for married women covers work and status, husband’s background, immunization and health, maternal and child anthropometry; questionnaire for husband covers attitudes specifically. The target population is stratified into two regions, urban and rural. Settlements with a population of more than 1000, such as provincial centers or district centers, are considered urban regions, while places with a population of less than 10,000 are considered rural regions. Multistaged sampling is always considered a more advanced version of cluster Sampling. We first divide the target population into different clusters, which are West, South, Central, North, and East regions of Turkey in this report. Then we break one cluster into smaller and smaller pieces at each stage. The five major regions are divided into different number of sub-regions, for example, east region contains three sub-regions, while north region contains two sub-regions. Each sub-region is consist of several provinces. 
+The target population of the DHS survey was divided into married women, single women, and husbands. These household populations completed different questionnaires. The questionnaires were designed in English and then translated into Turkish to collect information about their socioeconomic status. All types of questionnaires collected information about background characteristics, reproduction, marriage, sexually transmitted diseases and AIDS, knowledge, and use of family planning, fertility preference. Questionnaire for single women covered work and status, anthropometry: questionnaire for married women covered work and status, husband’s background, immunization and health, maternal and child anthropometry; questionnaire for husband covered attitudes specifically. 
 
+The Turkey DHS report used a weighted, multistaged, and stratified sampling method to select the sample. Multistaged sampling is always considered a more advanced version of cluster Sampling. The researchers first divided the target population into different clusters, which were West, South, Central, North, and East regions of Turkey in this report. Then the researchers broke one cluster into smaller and smaller pieces at each stage. The five major regions were divided into different numbers of sub-regions, for example, east region contained three sub-regions, while north region contained two sub-regions. Each sub-region was consist of several provinces. 
+
+Then stratified sampling method was used to divide sub-regions. The stratified sampling method is a method in which we divide our population into mutually exclusive strata or sub-populations. (Alexander, R., 2022). The sub-regions were stratified into two parts, urban and rural. Sub-regions with a population of more than 1000, such as provincial centers or district centers, were considered urban regions, while places with a population of less than 10,000 were considered rural regions.
 
 
 
@@ -80,12 +94,12 @@ When a population has distinct internal stratification, stratified sampling can 
 
 ### Weaknesses
 
-A downside of stratified sampling and cluster sampling is that evaluation and interpretation of the results are more complicated. clustering methods require the same representative size from samples, however, the size of representation is difficult to discern, so it is prone to significant sampling errors. (Gaille, 2020)
+A downside of stratified sampling and cluster sampling is that they make the evaluation and interpretation of the results more complicated. Clustering methods require the same representative size from samples, however, the size of representation is difficult to discern, so it is prone to significant sampling errors.[@clsuter]
 
 ## Data characteristics
 
-The dataset contains 50 observations in total, the dataset shows the percentage of women’s highest education levels and reasons they stopped attending school in 1998. We created  Table \@ref(tab:Table1) to get a sense of what our dataset looks like. From Table \@ref(tab:Table1), we could observe different reasons for leaving school for women aged 15-24 in Turkey in 1998, together with percent of women who have ever attended school but didn't attend anymore for each reason. Each row displays a specific reason for leaving school, and each column represents a different highest education level. For example, primary_incomplete refers to women who have attended primary school but didn't finish it; primary_complete refers to women who have completed primary school but didn't pursue higher education. We also have a row called 'number' to record the total number of women by highest education attained. 
-
+The dataset contains 50 observations in total, showing the percentage of women’s highest education levels and the reasons they stopped attending school in 1998. The target population is women aged 15-24 in Turkey in 1998.  We created  Table \@ref(tab:Table1) to get a sense of what our dataset looks like. From Table \@ref(tab:Table1), we could observe different reasons for leaving school for women aged 15-24 in Turkey in 1998, together with percent of women who have ever attended school but didn't attend anymore for each reason. Each row displays a specific reason for leaving school, and each column represents the highest education level. For example, primary_incomplete refers to women who have attended primary school but didn't finish it; primary_complete refers to women who have completed primary school but didn't pursue higher education. We also have a row called 'number' to record the total number of women by highest education attained. 
+(percent; numeric (%))
 
 
 
@@ -126,7 +140,6 @@ rural_long %>%
 From Table \@ref(tab:Table2) and Table \@ref(tab:Table3) where we generated some summary statistics, we could observe the minimum, maximum, mean, and median percent of women leaving school at each education level. We got a rough idea that in both rural and urban areas, women aged 15-24 experienced similar sets of reasons for leaving school in 1998, yet the percent distribution of women leaving school is not even for each reason at each education level.
 
 
-Talk way more about it. 
 
 
 ```{r, echo=FALSE, warning=FALSE}
@@ -153,7 +166,10 @@ num_by_edu %>%
   theme_minimal()
 ```
 
-From Figure \@ref(fig:Figure1), we observed that the percent of women aged 15-24 leaving school in both urban and rural areas are very similar in terms of the distribution across highest educations they attained; those who completed primary school but didn't go to secondary school took the greatest percentage among both rural and urban areas. Nevertheless, percent of women leaving school in rural areas due to failure to continue to secondary school almost doubled compared to women in urban areas. This indicates that girls in rural areas experienced severe loss of elementary educations compared with those in cities. 
+
+
+
+From Figure \@ref(fig:Figure1), we observed that among all of our respondents (females aged 15-24) in the rural areas in 1998, the proportion of females who left school after completing primary school is approximately 70%; in contrast, this proportion is around 40% for females in urban areas. We also observed that the distribution of the time stages where females left school is very similar for both rural and urban regions. Regardless of the fact that for both rural and urban women, the most common stage where they left school was after completing primary school, there was also a sharp contrast between rural and urban women in the way that the percent of women leaving school in rural areas due to failure to continue to secondary school almost doubled compared to those in urban areas. This indicates that girls in rural areas experienced a more severe loss of basic education compared with those in cities.
 
 \newpage
 
@@ -180,7 +196,12 @@ raw_data[18:31, c(1, 7)] %>%
   theme_minimal()
 ```
 
-From Figure \@ref(fig:Figure2) and Figure \@ref(fig:Figure3), we observed that despite those who are currently attending school, the percent of women aged 15-24 leaving school is highest for the reason "parents did not send to school" in both urban and rural areas. That is, the biggest reason for women not attending school is the attitudes of parents. 
+
+
+
+
+
+From Figure \@ref(fig:Figure2), we observed that in urban areas, despite women who were currently attending school, the percent of women who left school due to “parents did not send to school” takes up more than 20% of all females aged 15-24 who left school, and “parents did not send to school” is the most common reason why these females left school. In Figure \@ref(fig:Figure3), we observed that in rural areas, women who left school due to “parents did not send them to school” take up more than 30% of our sampled females; the most common reason females left school in rural areas is also the fact that their parents didn’t send them to school. Therefore, we could conclude that the biggest reason for women not attending school is the negative attitudes from parents towards sending girls to school.
 
 \newpage
 
@@ -193,7 +214,8 @@ raw_data[35:48, 1:6] %>%
   kable(caption = "Highest percent of women leaving school and corresponding reason for each education level")
 ```
 
-From Table \@ref(tab:Table4), we observed that for women aged 15-24 who attended primary school (either completed it or not) but not secondary school, the biggest reason for not continuing to study is the negative attitudes of parents towards education, while for those who completed secondary school but didn't pursue higher education, the biggest reason is failure to pass exams. 
+
+From Table \@ref(tab:Table4), we observed that for women aged 15-24 who didn’t go to secondary school (either completed or not completed primary school), the most common reason they failed to continue to school is “parents did not send to school”; specifically, 35.9% of women who didn’t complete primary school was leaving school because of their parents, and 40.1% of females who completed primary school but failed to go to secondary school were leaving due to parents’ attitudes. In contrast, for those who have completed secondary education but failed to go to college, the most common reason is they didn’t pass the exams. Thus we could conclude from table \@ref(tab:Table4) that specifically for females who experienced the loss of basic education, the major reason that they stopped attending school was the fact that their parents didn’t send them to school. 
 
 \newpage
 
@@ -202,7 +224,7 @@ From Table \@ref(tab:Table4), we observed that for women aged 15-24 who attended
 ## Purpose and summary of the survey
 
 Nowadays, education becomes a hot topic because a good education has the power to change a country’s destiny and a person’s life. Governments are investing more than before in educating their citizens, so it’s beneficial to social development. Having well education helps people think, feel, and behave in a way that contributes to their success, and improves not only their personal satisfaction but also their community. Although more and more people are well educated in developing countries, gender bias still exists. People in some backward regions have insufficient awareness of education for women. That’s why the rate of women leaving school before they accept higher education.
-In the report, we use a table from page 46 of Turkish Demographic and Health Survey (TDHS-98) to find the most important reason causing females’ to leave. Our target population is all the Women aged 15-24 who were not currently attending school were asked about the main reason for giving up further studying in Turkey. The results from responders were collected by TDHS interview directly. In order to make sure objectivity and authority, we selected the responders randomly from rural and urban areas. Also, the females who stopped attending schools at different stages (incomplete primary school, complete primary school, incomplete secondary school, complete secondary school, higher) are covered as well. In the survey, we provided several reasons to explain their leaving, including getting pregnant, getting married, taking care of children, their family needed help, unaffordable school fees, disliking school, needing to earn money, being unsupported by family, and others. 
+In the report, we use a table from page 46 of Turkish Demographic and Health Survey (TDHS-98) to find the most important reason causing females’ to leave. Our target population is all the Women aged 15-24 who were not currently attending school were asked about the main reason for giving up further studying in Turkey. The results from respondents were collected by TDHS interview directly. In order to make sure objectivity and authority, we selected the respondents randomly from rural and urban areas. Also, the females who stopped attending schools at different stages (incomplete primary school, complete primary school, incomplete secondary school, complete secondary school, higher) are covered as well. In the survey, we provided several reasons to explain their leaving, including getting pregnant, getting married, taking care of children, their family needed help, unaffordable school fees, disliking school, needing to earn money, being unsupported by family, and others. 
 In this paper, we discussed the percentage of women are currently attending school and the percentage of them who stop attending school at each education level in rural and urban separately. The main reasons for their leaving both regions are analyzed. In addition, we display the highest percentage of women leaving school and corresponding reasons for each education level. The research can provide guidance to programs seeking to improve educational opportunities for women.
 . 
 
@@ -218,9 +240,9 @@ Finally, those females who have opportunities to accept higher education face ch
 
 However, there are several limitations in our research so our data may not be accurate and we need to make some improvements. 
 Firstly, over 63000 thousand people lived in Turkey in 1998, and 50.75% were female. The sample size is only 3031, which is too small relative to the population of females aged 14-25. The small sample size gets decreasingly representative of the entire population. The small sample size can also lead to biased cases, such as non-response, which may influence data precision. Therefore, we want to survey as large a sample size as possible in further research. 
-Secondly, the survey is conducted by interview, which means that these responders have to answer the questions face to face, which means that they have the probability of concealing the real reason for their leaving because of environmental pressure or public opinion. For example, some females drop out of school when they get pregnant, but they are unwilling to say that and randomly choose another reason. In order to solve this problem, we suggest using an anonymous questionnaire to make sure the privacy of responders in the future.
-Thirdly, we observe that 17% of females choose “other” as the reason for stopping attending school, which is a high percentage. It reminds us that we may still ignore some main reasons causing their leave. Therefore, we suggest that the responders answering “others” are encouraged to write down the specific reasons in order to help us collect data accurately. This extra information is beneficial to us by giving more specific suggestions to improve the education level of females in Turkey.
-Finally, in the future survey, how family income and national GDP influence females’ education levels can be investigated. We should learn more about the relationship between citizens’ educational attainment and the development of a country. In addition, how parental factors influence children’s literacy development should be discussed. Also, sexual discrimination is considered a core issue in many fields, not just in education. If we want to fundamentally improve females' total education levels, analyzing the reasons causing discrimination is another topic necessary.
+Secondly, the survey is conducted by interview and completing questionnaire, which means that these respondents have to answer the questions face to face, and they have the probability of concealing the real reason for their leaving because of environmental pressure or public opinion. For example, some females drop out of school when they get pregnant, but they are unwilling to say that and randomly choose another reason. In order to solve this problem, we suggest using an online anonymous questionnaire to make sure the privacy of respondents in the future.
+Thirdly, we observe that 17% of females choose “other” as the reason for stopping attending school, which is a high percentage. It reminds us that we may still ignore some main reasons causing their leave. Therefore, we suggest that the respondents answering “others” are encouraged to write down the specific reasons in order to help us collect data accurately. This extra information is beneficial to us by giving more specific suggestions to improve the education level of females in Turkey.
+Finally, in the future survey, how family income and national GDP influence females’ education levels can be investigated. We should learn more about the relationship between citizens’ educational attainment and the development of a country. In addition, how parental factors influence children literacy development should be discussed. Also, sexual discrimination is considered a core issue in many fields, not just in education. If we want to fundamentally improve females' total education levels, analyzing the reasons causing discrimination is another topic necessary.
 
 
 
@@ -280,7 +302,7 @@ Finally, in the future survey, how family income and national GDP influence fema
 **Collection process**
 
 1. *How was the data associated with each instance acquired? Was the data directly observable (for example, raw text, movie ratings), reported by subjects (for example, survey responses), or indirectly inferred/derived from other data (for example, part-of-speech tags, model-based guesses for age or language)? If the data was reported by subjects or indirectly inferred/derived from other data, was the data validated/verified? If so, please describe how.*
-	- TBD
+	- The data was derived from "Turkey DHS, 1998, Final Report". We used R package "pointblank" to run some validation tests. 
 2. *What mechanisms or procedures were used to collect the data (for example, hardware apparatuses or sensors, manual human curation, software programs, software APIs)? How were these mechanisms or procedures validated?*
 	- The dataset was collected by a survey using stratified sampling and cluster sampling method. 
 3. *If the dataset is a sample from a larger set, what was the sampling strategy (for example, deterministic, probabilistic with specific sampling probabilities)?*
@@ -294,7 +316,7 @@ Finally, in the future survey, how family income and national GDP influence fema
 7. *Did you collect the data from the individuals in question directly, or obtain it via third parties or other sources (for example, websites)?*
 	- The dataset was obtained from third parties. The complete dataset can be obtained from Hacettepe University, Institute of Population Studies, 06100 Ankara, Turkey. 
 8. *Were the individuals in question notified about the data collection? If so, please describe (or show with screenshots or other information) how notice was provided, and provide a link or other access point to, or otherwise reproduce, the exact language of the notification itself.*
-	- TBD
+	- The individuals in question were notified about the data collection. Detailed information can be found from Hacettepe University, Institute of Population Studies, 06100 Ankara, Turkey.  
 9. *Did the individuals in question consent to the collection and use of their data? If so, please describe (or show with screenshots or other information) how consent was requested and provided, and provide a link or other access point to, or otherwise reproduce, the exact language to which the individuals consented.*
 	- The individuals in question consent to the collection and use of their data. The questionnaires are available at https://dhsprogram.com/publications/publication-fr108-dhs-final-reports.cfm.
 10. *If consent was obtained, were the consenting individuals provided with a mechanism to revoke their consent in the future or for certain uses? If so, please provide a description, as well as a link or other access point to the mechanism (if appropriate).*
@@ -307,7 +329,7 @@ Finally, in the future survey, how family income and national GDP influence fema
 **Preprocessing/cleaning/labeling**
 
 1. *Was any preprocessing/cleaning/labeling of the data done (for example, discretization or bucketing, tokenization, part-of-speech tagging, SIFT feature extraction, removal of instances, processing of missing values)? If so, please provide a description. If not, you may skip the remaining questions in this section.*
-	- TBD
+	- The dataset was split into text lines using the R package “stringi”. Then we separated the data into columns and stored it as raw data. 
 2. *Was the "raw" data saved in addition to the preprocessed/cleaned/labeled data (for example, to support unanticipated future uses)? If so, please provide a link or other access point to the "raw" data.*
 	- The raw data was saved in addition to the cleaned data. It is available thorugh Github.
 3. *Is the software that was used to preprocess/clean/label the data available? If so, please provide a link or other access point.*
@@ -377,10 +399,9 @@ Finally, in the future survey, how family income and national GDP influence fema
 
 Alexander, R. (n.d.).,2022, Telling stories with data. Chapter 8 Farm data. Retrieved March 28, 2022, from https://www.tellingstorieswithdata.com/farm-data.html?q=stratified+samplin#sampling-essentials 
 
-Gaille, L. (2020, February 18). 16 key advantages and disadvantages of cluster sampling. Vittana.org. Retrieved March 28, 2022, from https://vittana.org/16-key-advantages-and-disadvantages-of-cluster-sampling 
 
 
-Hacettepe University, Institute of Population Studies/Turkey and Macro International. 1999. Turkey Demographic and Health Survey 1998. Ankara, Turkey: Hacettepe University, Institute of Population Studies/Turkey and Macro International
+
 
 
 

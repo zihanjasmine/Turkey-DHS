@@ -2,7 +2,7 @@
 # Purpose: Clean the data downloaded from "Turkey: DHS, 1998 - Final Report"
 # Author: Zihan Zhang
 # Data: 28 March 2022
-# Contact: zhanzihan.zhang@mail.utoronto.ca [PROBABLY CHANGE THIS ALSO!!!!]
+# Contact: zhanzihan.zhang@mail.utoronto.ca 
 # License: MIT
 
 
